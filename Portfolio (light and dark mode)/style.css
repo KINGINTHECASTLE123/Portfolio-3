@@ -1,0 +1,95 @@
+/* Colour palette in light mode. Custom properties are defined using CSS variables in :root.
+The "var()" function is used to reference these variables throughout the stylesheet. */
+:root {
+    --base-color: bisque;
+    --base-variant: #e8e9ed;
+    --footer-color: lightgrey;
+    --main-text-color: darkslategray;
+    --link-text-color: #16a085;
+    --header-line-color: solid darkslategrey;
+    --primary-color: #3a435d;
+}
+/* Colour palette for dark mode. Easily switches the whole website's theme
+by redefining the CSS variables within the dark-mode class. */
+.dark-mode {
+    --base-color: #070b1d;
+    --footer-color: #3a435d;
+    --main-text-color: #efefef;
+    --link-text-color: #16a085;
+    --header-line-color: solid darkslategrey;
+}
+
+body {
+    font-family: 'Open Sans', sans-serif;
+    color: var(--main-text-color);
+    background-color: var(--base-color);
+    overflow-x: hidden;
+}
+
+header {
+    text-align: center;
+}
+
+header hr {
+    width: 70%;
+    margin: 10px auto;
+    border: 1px var(--header-line-color);
+}
+
+main {
+    max-width: 700px;
+    margin: 5px auto;
+    padding: 12px;
+    font-size: 1.5rem;
+    line-height: 2.5rem;
+}
+
+footer {
+    background-color: var(--footer-color);
+    padding: 24px 0 36px;
+    text-align: center;
+    margin-top: 40px;
+    position: absolute;
+    left: 0;
+    right: 0;
+    font-size: 1.2rem;
+}
+
+a {
+    color: var(--link-text-color);
+    text-decoration: none;
+}
+
+footer nav a {
+    margin: 0 10px;
+}
+/* Styling of the light/dark mode switch */
+#theme-switch {
+    height: 50px;
+    width: 50px;
+    padding: 0;
+    border-radius: 9999px;
+    background-color: var(--base-variant);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: fixed;
+    top: 20px;
+    right: 20px;
+}
+
+#theme-switch svg {
+    fill: var(--primary-color);
+}
+/* Hides sun icon in light mode */
+#theme-switch svg:last-child {
+    display: none;
+}
+/* Hides moon icon in dark mode */
+.dark-mode #theme-switch svg:first-child {
+    display: none;
+}
+/* Shows sun icon in dark mode */
+.dark-mode #theme-switch svg:last-child {
+    display: block;
+}
