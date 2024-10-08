@@ -1,0 +1,9 @@
++------------------+---------------+----------------+
+|TeamName          |EscapeRoom     |CompletionStatus|
++------------------+---------------+----------------+
+|Code Breakers     |Egyptian Tomb  |Completed       |
+|Time Travelers    |Haunted Circus |Completed       |
+|The Puzzle Masters|Mystery Mansion|Completed       |
+|Escape Artists    |Pirate Cove    |Failed          |
+|Mystery Solvers   |Space Odyssey  |In Progress     |
++------------------+---------------+----------------+
