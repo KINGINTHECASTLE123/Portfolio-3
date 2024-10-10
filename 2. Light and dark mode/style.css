@@ -1,5 +1,4 @@
-/* Colour palette in light mode. Custom properties are defined using CSS variables in :root.
-The "var()" function is used to reference these variables throughout the stylesheet. */
+/* Colour palette in light mode */
 :root {
     --base-color: bisque;
     --base-variant: #e8e9ed;
@@ -9,9 +8,9 @@ The "var()" function is used to reference these variables throughout the stylesh
     --header-line-color: solid darkslategrey;
     --primary-color: #3a435d;
 }
-/* Colour palette for dark mode. Easily switches the whole website's theme
-by redefining the CSS variables within the dark-mode class. */
-.dark-mode {
+
+/* Colour palette for dark mode */
+body.dark-mode {
     --base-color: #070b1d;
     --footer-color: #3a435d;
     --main-text-color: #efefef;
@@ -19,11 +18,13 @@ by redefining the CSS variables within the dark-mode class. */
     --header-line-color: solid darkslategrey;
 }
 
+/* Base styles */
 body {
     font-family: 'Open Sans', sans-serif;
     color: var(--main-text-color);
     background-color: var(--base-color);
     overflow-x: hidden;
+    transition: background-color 0.3s ease-in-out, color 0.3s ease-in-out; /* Smooth transition */
 }
 
 header {
@@ -34,6 +35,7 @@ header hr {
     width: 70%;
     margin: 10px auto;
     border: 1px var(--header-line-color);
+    transition: border-color 0.3s ease-in-out;
 }
 
 main {
@@ -53,16 +55,19 @@ footer {
     left: 0;
     right: 0;
     font-size: 1.2rem;
+    transition: background-color 0.3s ease-in-out;
 }
 
 a {
     color: var(--link-text-color);
     text-decoration: none;
+    transition: color 0.3s ease-in-out;
 }
 
 footer nav a {
     margin: 0 10px;
 }
+
 /* Styling of the light/dark mode switch */
 #theme-switch {
     height: 50px;
@@ -76,20 +81,30 @@ footer nav a {
     position: fixed;
     top: 20px;
     right: 20px;
+    cursor: pointer; /* Cursor change for better UX */
+    border: none; /* Remove border */
+    box-shadow: none; /* Remove any box-shadow */
+    outline: none; /* Remove any outline */
+    transition: background-color 0.3s ease-in-out; /* Smooth transition */
 }
 
+/* Icon color */
 #theme-switch svg {
     fill: var(--primary-color);
+    stroke: none; /* Remove any SVG stroke */
+    outline: none; /* Remove outline */
+    transition: fill 0.3s ease-in-out; /* Smooth icon color transition */
 }
-/* Hides sun icon in light mode */
+
+/* Sun and moon icon toggling */
 #theme-switch svg:last-child {
-    display: none;
+    display: none; /* Hides sun icon in light mode */
 }
-/* Hides moon icon in dark mode */
+
 .dark-mode #theme-switch svg:first-child {
-    display: none;
+    display: none; /* Hides moon icon in dark mode */
 }
-/* Shows sun icon in dark mode */
+
 .dark-mode #theme-switch svg:last-child {
-    display: block;
+    display: block; /* Shows sun icon in dark mode */
 }
