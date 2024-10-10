@@ -1,9 +1,7 @@
 -- 1. Query: Find the Most Popular Escape Room Themes
-SELECT
-    `Escape Rooms`.Theme,
-    COUNT(`Teams_has_Escape Rooms`.TeamID) AS TotalTeams
+SELECT `Escape Rooms`.Theme, COUNT(`Teams_has_Escape Rooms`.TeamID) AS TotalTeams
 FROM `Portfolio-3`.`Escape Rooms`
-         JOIN `Portfolio-3`.`Teams_has_Escape Rooms` ON `Escape Rooms`.RoomID = `Teams_has_Escape Rooms`.`Escape Rooms_RoomID`
+JOIN `Portfolio-3`.`Teams_has_Escape Rooms` ON `Escape Rooms`.RoomID = `Teams_has_Escape Rooms`.`Escape Rooms_RoomID`
 GROUP BY `Escape Rooms`.Theme
 ORDER BY TotalTeams DESC;
 
@@ -20,14 +18,12 @@ ORDER BY TotalTeams DESC;
 
  */
 -- 2. Query: Find the Top 3 Hardest Puzzles Based on Hints Used
-SELECT
-    Puzzles.PuzzleName,
-    COUNT(Hints.UsageCount) AS HintsRequested
+SELECT Puzzles.PuzzleName, COUNT(Hints.UsageCount) AS HintsRequested
 FROM `Portfolio-3`.`Hints`
-         JOIN `Portfolio-3`.`Puzzles` ON Hints.PuzzleID = Puzzles.PuzzleID
+JOIN `Portfolio-3`.`Puzzles` ON Hints.PuzzleID = Puzzles.PuzzleID
 GROUP BY Puzzles.PuzzleName
 ORDER BY HintsRequested DESC
-    LIMIT 3;
+LIMIT 3;
 
 /*
 +-----------+--------------+
@@ -41,10 +37,7 @@ ORDER BY HintsRequested DESC
 
 
 -- 3. Query: Track Team Completion Status by Escape Room
-SELECT
-    Teams.TeamName,
-    `Escape Rooms`.Title AS EscapeRoom,
-    Teams.CompletionStatus
+SELECT Teams.TeamName, `Escape Rooms`.Title AS EscapeRoom, Teams.CompletionStatus
 FROM `Portfolio-3`.`Teams`
 JOIN `Portfolio-3`.`Teams_has_Escape Rooms` ON Teams.TeamID = `Teams_has_Escape Rooms`.TeamID
 JOIN `Portfolio-3`.`Escape Rooms` ON `Teams_has_Escape Rooms`.`Escape Rooms_RoomID` = `Escape Rooms`.RoomID

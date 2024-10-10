@@ -116,7 +116,7 @@ ORDER BY `Life Expectancy` DESC
 -- 6. Write a query to find cities in countries that have a population within 10% of the population of 'Japan'. Display the city name, country name, and population.
 SELECT ct.Name AS CityName, c.Name AS CountryName, ct.Population
 FROM country c
-         LEFT JOIN city ct ON c.Code = ct.CountryCode
+LEFT JOIN city ct ON c.Code = ct.CountryCode
 WHERE c.Population BETWEEN (
     (SELECT Population FROM country WHERE Name = 'Japan') * 0.9
     ) AND (
@@ -150,3 +150,135 @@ ORDER BY ct.Population DESC;
 |Sagamihara         |Japan      |586300    |
 +-------------------+-----------+----------+
  */
+
+-- 7. Write a query to rank countries by their GDP in descending order. Show the country name and its GDP, and add a rank column.
+SELECT ROW_NUMBER() OVER(ORDER BY GNP DESC) AS `rank`, Name, GNP
+FROM country;
+
+/* Total rows = 239
++----+--------------------------------------------+----------+
+|rank|Name                                        |GNP       |
++----+--------------------------------------------+----------+
+|1   |United States                               |8510700.00|
+|2   |Japan                                       |3787042.00|
+|3   |Germany                                     |2133367.00|
+|4   |France                                      |1424285.00|
+|5   |United Kingdom                              |1378330.00|
+|6   |Italy                                       |1161755.00|
+|7   |China                                       |982268.00 |
+|8   |Brazil                                      |776739.00 |
+|9   |Canada                                      |598862.00 |
+|10  |Spain                                       |553233.00 |
+|11  |India                                       |447114.00 |
+|12  |Mexico                                      |414972.00 |
+|13  |Netherlands                                 |371362.00 |
+|14  |Australia                                   |351182.00 |
+|15  |Argentina                                   |340238.00 |
++----+--------------------------------------------+----------+
+*/
+
+-- 8. Write a query to find countries whose GDP is higher than that of any of their neighboring countries. Assume neighboring countries are defined by the neighbor relationship in the countries table.
+SELECT c1.Name, c1.Region, c1.GNP
+FROM country AS c1
+WHERE c1.GNP > 0
+  AND NOT EXISTS (
+    SELECT 1
+    FROM country AS c2
+    WHERE c1.Region = c2.Region AND c1.Name != c2.Name AND c2.GNP > c1.GNP
+)
+ORDER BY c1.GNP DESC;
+
+/* Total rows = 23
++------------------+-------------------------+----------+
+|Name              |Region                   |GNP       |
++------------------+-------------------------+----------+
+|United States     |North America            |8510700.00|
+|Japan             |Eastern Asia             |3787042.00|
+|Germany           |Western Europe           |2133367.00|
+|United Kingdom    |British Islands          |1378330.00|
+|Italy             |Southern Europe          |1161755.00|
+|Brazil            |South America            |776739.00 |
+|India             |Southern and Central Asia|447114.00 |
+|Mexico            |Central America          |414972.00 |
+|Australia         |Australia and New Zealand|351182.00 |
+|Russian Federation|Eastern Europe           |276608.00 |
+|Sweden            |Nordic Countries         |226492.00 |
+|Turkey            |Middle East              |210721.00 |
+|Myanmar           |Southeast Asia           |180375.00 |
+|South Africa      |Southern Africa          |116729.00 |
+|Egypt             |Northern Africa          |82710.00  |
+|Nigeria           |Western Africa           |65707.00  |
+|Puerto Rico       |Caribbean                |34100.00  |
+|Lithuania         |Baltic Countries         |10692.00  |
+|Kenya             |Eastern Africa           |9217.00   |
+|Cameroon          |Central Africa           |9174.00   |
+|Papua New Guinea  |Melanesia                |4988.00   |
+|Guam              |Micronesia               |1197.00   |
+|French Polynesia  |Polynesia                |818.00    |
++------------------+-------------------------+----------+
+*/
+
+-- 9. Write a query to find the number of countries where each language is spoken. Show the language and the count of countries speaking that language, ordered by the count in descending order.
+SELECT Language, COUNT(CountryCode) AS country_count
+FROM countrylanguage
+GROUP BY Language
+ORDER BY country_count DESC;
+
+/* Total rows = 458
+ +-------------------------+-------------+
+|Language                 |country_count|
++-------------------------+-------------+
+|English                  |60           |
+|Arabic                   |33           |
+|Spanish                  |28           |
+|French                   |25           |
+|German                   |19           |
+|Chinese                  |19           |
+|Russian                  |17           |
+|Italian                  |15           |
+|Creole English           |14           |
+|Portuguese               |12           |
+|Turkish                  |12           |
+|Ful                      |12           |
+|Ukrainian                |12           |
+|Polish                   |10           |
+|Serbo-Croatian           |9            |
++-------------------------+-------------+
+*/
+
+-- 10. Write a query to find all cities where the city population is greater than the average population of their respective countries. Show the city name, country name, and both populations.
+SELECT city.Name, country.Name AS CountryName, city.Population AS CityPopulation, avg_city.AvgCountryPopulation
+FROM city
+JOIN country ON city.CountryCode = country.Code
+JOIN (
+    SELECT CountryCode, AVG(Population) AS AvgCountryPopulation
+    FROM city
+    GROUP BY CountryCode
+) AS avg_city ON city.CountryCode = avg_city.CountryCode
+WHERE city.Population > avg_city.AvgCountryPopulation
+ORDER BY AvgCountryPopulation DESC;
+
+/* Total rows = 915
++------------------------------+-------------------------------------+--------------+--------------------+
+|Name                          |CountryName                          |CityPopulation|AvgCountryPopulation|
++------------------------------+-------------------------------------+--------------+--------------------+
+|Kowloon and New Kowloon       |Hong Kong                            |1987996       |1650316.5000        |
+|Sydney                        |Australia                            |3276207       |808119.0000         |
+|Melbourne                     |Australia                            |2865329       |808119.0000         |
+|Brisbane                      |Australia                            |1291117       |808119.0000         |
+|Perth                         |Australia                            |1096829       |808119.0000         |
+|Adelaide                      |Australia                            |978100        |808119.0000         |
+|Brazzaville                   |Congo                                |950000        |725000.0000         |
+|Tripoli                       |Libyan Arab Jamahiriya               |1682000       |674251.7500         |
+|Bengasi                       |Libyan Arab Jamahiriya               |804000        |674251.7500         |
+|Beirut                        |Lebanon                              |1100000       |670000.0000         |
+|Bangkok                       |Thailand                             |6320174       |662763.4167         |
+|Abidjan                       |Côte d’Ivoire                        |2500000       |638227.4000         |
+|Bakı                          |Azerbaijan                           |1787800       |616000.0000         |
+|Baghdad                       |Iraq                                 |4336000       |595069.4000         |
+|Mosul                         |Iraq                                 |879000        |595069.4000         |
+|Kabul                         |Afghanistan                          |1780000       |583025.0000         |
+|Seoul                         |South Korea                          |9981619       |557141.3286         |
+|Pusan                         |South Korea                          |3804522       |557141.3286         |
++------------------------------+-------------------------------------+--------------+--------------------+
+*/
