@@ -116,4 +116,10 @@ h1 {
 
 .label-score {
     margin-bottom: 2rem;
+    font-size: 2rem;
+}
+
+.label-highScore {
+    margin-bottom: 2rem;
+    font-size: 2rem;
 }
